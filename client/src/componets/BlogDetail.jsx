@@ -20,8 +20,6 @@ const BlogDetail = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDetails = useCallback(async () => {
     try {
       const res = await axios.get(`${config.BASE_URL}/api/blogs/${id}`);

@@ -8,8 +8,9 @@ import config from "../config";
 
 const Login = () => {
   const location = useLocation();
-  const naviagte = useNavigate();
-  const dispath = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { isSignupButtonPressed } = location.state || {};
 
   const [inputs, setInputs] = useState({
@@ -17,48 +18,82 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [isSignup, setIsSignup] = useState(isSignupButtonPressed || false);
+
+  const [isSignup, setIsSignup] = useState(
+    isSignupButtonPressed || false
+  );
+
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
   useEffect(() => {
-    setIsSignup(isSignupButtonPressed);
+    setIsSignup(isSignupButtonPressed || false);
   }, [isSignupButtonPressed]);
+
   const sendRequest = async (type = "login") => {
-    console.log("inside send req");
-    console.log(`${config.BASE_URL}/api/users/${type}`);
-    const res = await axios
-      .post(`${config.BASE_URL}/api/users/${type}`, {
-        name: inputs.name,
-        email: inputs.email,
-        password: inputs.password,
-      })
-      .catch((err) => console.log(err));
+    try {
+      console.log("inside send req");
+      console.log(`${config.BASE_URL}/api/users/${type}`);
 
-    const data = await res.data;
-    console.log("return");
-    console.log(data);
-    return data;
-  };
+      const res = await axios.post(
+        `${config.BASE_URL}/api/users/${type}`,
+        {
+          name: inputs.name,
+          email: inputs.email,
+          password: inputs.password,
+        }
+      );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(inputs);
-    if (isSignup) {
-      sendRequest("signup")
-        .then((data) => localStorage.setItem("userId", data.user._id))
-        .then(() => dispath(authActions.login()))
-        .then(() => naviagte("/blogs"));
-    } else {
-      sendRequest()
-        .then((data) => localStorage.setItem("userId", data.user._id))
-        .then(() => dispath(authActions.login()))
-        .then(() => naviagte("/blogs"));
+      const data = res.data;
+
+      console.log("return");
+      console.log(data);
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      return null;
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(inputs);
+
+    if (isSignup) {
+      const data = await sendRequest("signup");
+
+      if (!data || !data.data || !data.data.user) {
+        console.log("Signup failed");
+        return;
+      }
+
+      localStorage.setItem("userId", data.data.user._id);
+
+      dispatch(authActions.login());
+
+      navigate("/blogs");
+    } else {
+      const data = await sendRequest("login");
+
+      if (!data || !data.data || !data.data.user) {
+        console.log("Login failed");
+        return;
+      }
+
+      localStorage.setItem("userId", data.data.user._id);
+
+      dispatch(authActions.login());
+
+      navigate("/blogs");
+    }
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -77,6 +112,7 @@ const Login = () => {
           <Typography variant="h2" padding={3} textAlign="center">
             {isSignup ? "Signup" : "Login"}
           </Typography>
+
           {isSignup && (
             <TextField
               name="name"
@@ -85,23 +121,26 @@ const Login = () => {
               placeholder="Name"
               margin="normal"
             />
-          )}{" "}
+          )}
+
           <TextField
             name="email"
             onChange={handleChange}
             value={inputs.email}
-            type={"email"}
+            type="email"
             placeholder="Email"
             margin="normal"
           />
+
           <TextField
             name="password"
             onChange={handleChange}
             value={inputs.password}
-            type={"password"}
+            type="password"
             placeholder="Password"
             margin="normal"
           />
+
           <Button
             type="submit"
             variant="contained"
@@ -110,6 +149,7 @@ const Login = () => {
           >
             Submit
           </Button>
+
           <Button
             onClick={() => setIsSignup(!isSignup)}
             sx={{ borderRadius: 3, marginTop: 3 }}

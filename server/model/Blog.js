@@ -3,27 +3,31 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const blogSchema = new Schema({
-    title : {
-        type: String,
-        required: true,
-    },
-    desc :  {
-        type: String,
-        required: true,
-    },
-    img :  {
-        type: String,
-        required: true,
-    },
-    user : {
-        type: mongoose.Types.ObjectId,
-        ref:"User",
-        required: true,
-    },
-    date: {
-        type: Date, 
-        default: Date.now, 
-    },
-})
+  title: {
+    type: String,
+    required: true,
+  },
 
-module.exports =  mongoose.model("Blog", blogSchema);
+  desc: {
+    type: String,
+    required: true,
+  },
+
+  img: {
+    type: String,
+    required: true,
+  },
+
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+
+  date: {
+    type: Date,
+    required: true,
+  },
+});
+
+module.exports = mongoose.model("Blog", blogSchema);
