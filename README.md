@@ -4,7 +4,6 @@
 
 ---
 
-
 ## 🎯 Overview
 
 **BlogApp** is a comprehensive blogging platform that demonstrates expertise in building scalable, production-ready applications. This project exemplifies the ability to architect and develop complete web solutions with a focus on clean code, user experience, and technical excellence.
