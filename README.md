@@ -2,9 +2,6 @@
 
 > A modern, full-stack blogging platform built with **JavaScript**—showcasing proficiency in end-to-end web development, from elegant frontends to robust backends.
 
-
-
-
 ---
 
 ## 🎯 Overview
