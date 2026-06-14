@@ -9,6 +9,7 @@
 
 **BlogApp** is a comprehensive blogging platform that demonstrates expertise in building scalable, production-ready applications. This project exemplifies the ability to architect and develop complete web solutions with a focus on clean code, user experience, and technical excellence.
 
+
 ### Key Highlights
 - ✨ **Full-Stack Architecture** – Seamlessly integrated client-server communication
 - 🚀 **Modern Tech Stack** – Built entirely in JavaScript for consistency and productivity
